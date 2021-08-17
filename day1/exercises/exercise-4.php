@@ -6,6 +6,7 @@ class Cricketers{
         $this->inputArray = json_decode($inputString,true);
     }
 
+    // get and prints all names, age and cities
     public function getNamesCityAge(){
         $this->nameArray = [];
         $this->ageArray = [];
@@ -22,12 +23,16 @@ class Cricketers{
         Print "Cities:\n";
         print_r($this->cityArray);
     }
+
+    // gets unique names
     public function getUniqueNames($allNames){
         $allNames = array_map( 'strtolower', $allNames );
         $uniqueNames = array_unique($allNames);
         $uniqueNames = array_map( 'ucfirst', $uniqueNames );
         return $uniqueNames;
     }
+
+    // gets names of people with max age in JSON
     public function getMaxAgePeople(){
         $resultArray = [];
         $maxAge = 0;

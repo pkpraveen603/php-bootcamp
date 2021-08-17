@@ -1,4 +1,6 @@
 <?php
+
+// masks middle 6 digits of input phone number
 function maskPhoneNumber($phoneNumber){
     $phoneNumber = "$phoneNumber";
     if (strlen($phoneNumber)!=10){

@@ -1,4 +1,6 @@
 <?php
+
+// convert 1 string from snake to camel case
 function snakeToCamel($inputString){
     $isUnderscore = false;
     $resultString = "";
@@ -17,12 +19,9 @@ function snakeToCamel($inputString){
     return $resultString;
 }
 
+// apply the function to entire array
 function convertToCamelCase($inputArray){
-    $resultArray = [];
-    foreach ($inputArray as  $item){
-        array_push($resultArray,snakeToCamel($item));
-    }
-    return $resultArray;
+    return array_map('snakeToCamel',$inputArray);
 }
 
 print_r(convertToCamelCase(["snake_case", "camel_case"]));

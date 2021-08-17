@@ -1,4 +1,6 @@
 <?php
+
+// return 2d array input as 1d
 function arrayFlatten($inputArray){
     $resultArray = [];
     foreach ($inputArray as $value){
