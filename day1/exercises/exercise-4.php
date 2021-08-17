@@ -16,11 +16,11 @@ class Cricketers{
             array_push($this->ageArray,$values["age"]);
             array_push($this->cityArray,$values["address"]["city"]);
         }
-        print "Names:\n";
+        echo "Names:\n";
         print_r($this->nameArray);
-        print "Ages:\n";
+        echo "Ages:\n";
         print_r($this->ageArray);
-        Print "Cities:\n";
+        echo "Cities:\n";
         print_r($this->cityArray);
     }
 
