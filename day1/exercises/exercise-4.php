@@ -3,16 +3,24 @@
 class Cricketers{
 
     public function __construct($inputString){
-
         $this->inputArray = json_decode($inputString,true);
     }
 
-    public function getNames(){
-        $resultArray = [];
+    public function getNamesCityAge(){
+        $this->nameArray = [];
+        $this->ageArray = [];
+        $this->cityArray = [];
         foreach ($this->inputArray["players"] as $values){
-            array_push($resultArray,$values["name"]);
+            array_push($this->nameArray,$values["name"]);
+            array_push($this->ageArray,$values["age"]);
+            array_push($this->cityArray,$values["address"]["city"]);
         }
-        return $resultArray;
+        print "Names:\n";
+        print_r($this->nameArray);
+        print "Ages:\n";
+        print_r($this->ageArray);
+        Print "Cities:\n";
+        print_r($this->cityArray);
     }
     public function getUniqueNames($allNames){
         $allNames = array_map( 'strtolower', $allNames );
@@ -37,13 +45,14 @@ class Cricketers{
 
 }
 
-$CricketersJSON = "{\"players\":[{\"name\":\"Ganguly\",\"age\":45,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Dravid\",\"age\":45,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Dhoni\",\"Age\":37,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Virat\",\"age\":35,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Jadeja\",\"age\":35,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Jadeja\",\"age\":35,\"address\":{\"city\":\"Hyderabad\"}}]}";
+$CricketersJSON = "{\"players\":[{\"name\":\"Ganguly\",\"age\":45,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Dravid\",\"age\":45,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Dhoni\",\"age\":37,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Virat\",\"age\":35,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Jadeja\",\"age\":35,\"address\":{\"city\":\"Hyderabad\"}},{\"name\":\"Jadeja\",\"age\":35,\"address\":{\"city\":\"Hyderabad\"}}]}";
 $cricketers = new Cricketers($CricketersJSON);
-$allNames = $cricketers->getNames();
 //q4 ans 1
-print_r($allNames);
+$cricketers->getNamesCityAge();
 //q4 ans 2
-print_r($cricketers->getUniqueNames($allNames));
+print "Unique Names:\n";
+print_r($cricketers->getUniqueNames($cricketers->nameArray));
 //q4 ans 3
+print "People with max age in array:\n";
 print_r($cricketers->getMaxAgePeople());
 
