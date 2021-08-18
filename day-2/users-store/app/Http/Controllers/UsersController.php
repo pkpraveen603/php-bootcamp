@@ -13,11 +13,11 @@ class UsersController extends Controller
      *
      * @return JsonResponse
      */
-    public function getAllUsers()
+    public function getAllUsers(): JsonResponse
     {
-        $students = DB::table('users')->get();
+        $users = DB::table('users')->get();
         return response()->json([
-            'students'=>$students,
+            'users'=>$users,
         ]);
     }
 
@@ -26,12 +26,12 @@ class UsersController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getUserByID(int $id)
+    public function getUserByID(int $id): JsonResponse
     {
         //
-        $students = DB::table('users')->find($id);
+        $user = DB::table('users')->find($id);
         return response()->json([
-            'students'=>$students,
+            'user'=>$user,
         ]);
     }
 
@@ -42,7 +42,7 @@ class UsersController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function createUserByID(Request $request)
+    public function createUserByID(Request $request): JsonResponse
     {
         $firstname = \request('firstname');
         $lastname = \request('lastname');
@@ -59,10 +59,10 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
         DB::table('users')->delete($id);
         return response()->json([
