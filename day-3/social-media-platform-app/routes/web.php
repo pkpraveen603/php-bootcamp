@@ -20,19 +20,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 //user routes
-Route::get('/user', [UserController::class, 'getUsers']);
-Route::patch('/user/{id}', [UserController::class, 'updateUser']);
-Route::post('/user', [UserController::class, 'createUser']);
-Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
+Route::get('/user', [UserController::class, 'index']);
+Route::patch('/user/{id}', [UserController::class, 'update']);
+Route::post('/user', [UserController::class, 'store']);
+Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
 //post routes
-Route::get('/post', [PostController::class, 'getPosts']);
-Route::patch('/post/{id}', [PostController::class, 'editPost']);
-Route::post('/post', [PostController::class, 'createPost']);
-Route::delete('/post/{id}', [PostController::class, 'deletePost']);
+Route::get('/post/{user_id}', [PostController::class, 'index']);
+Route::patch('/post/{id}', [PostController::class, 'update']);
+Route::post('/post/{user_id}', [PostController::class, 'store']);
+Route::delete('/post/{id}', [PostController::class, 'destroy']);
 
 //comment routes
-Route::get('/comment/{id}', [CommentController::class, 'getComments']);
-Route::patch('/comment/{id}', [CommentController::class, 'editComment']);
-Route::post('/comment', [CommentController::class, 'addComment']);
-Route::delete('/comment/{id}', [CommentController::class, 'deleteComment']);
+Route::get('/comment/{post_id}', [CommentController::class, 'index']);
+Route::post('/comment/{user_id}', [CommentController::class, 'store']);
+Route::delete('/comment/{id}', [CommentController::class, 'destroy']);

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SocialMediaCommentService;
+use App\Services\SocialMediaPostService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -9,44 +12,38 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $post_id
+     * @return JsonResponse
      */
-    public function getComments()
+    public function index(int $post_id): JsonResponse
     {
         //
+        return (new SocialMediaCommentService())->getComments($post_id);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $user_id
+     * @return JsonResponse
      */
-    public function addComment()
+    public function store(Request $request, int $user_id): JsonResponse
     {
         //
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function editComment($id)
-    {
-        //
+        return (new SocialMediaCommentService())->addComment($request,$user_id);
     }
 
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function deleteComment($id)
+    public function destroy(int $id): JsonResponse
     {
         //
+        return (new SocialMediaCommentService())->deleteComment($id);
     }
 }
