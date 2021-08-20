@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SocialMediaPostService {
 
@@ -32,10 +33,15 @@ class SocialMediaPostService {
      */
     public function createPost(Request $request, int $user_id): JsonResponse
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'title' => 'bail|required|max:255',
             'body' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message'=>'invalid input'],400);
+        }
 
         if (!DB::table('users')->where('id',$user_id)->exists()){
             return response()->json(['message'=>'user does not exist'],500);
@@ -65,10 +71,14 @@ class SocialMediaPostService {
         $body = \request('body');
         $title = \request('title');
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'bail|required|max:255',
             'body' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message'=>'invalid input'],400);
+        }
 
         $data = array('body'=>$body,'title'=>$title, 'id' => $id);
         Post::where('id', $id)->update($data);

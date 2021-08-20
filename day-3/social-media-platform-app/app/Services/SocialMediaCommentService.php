@@ -6,6 +6,7 @@ use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SocialMediaCommentService {
 
@@ -32,10 +33,15 @@ class SocialMediaCommentService {
      */
     public function addComment(Request $request, int $user_id): JsonResponse
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'comment' => 'bail|required',
             'post_id' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message'=>'invalid input'],400);
+        }
 
         if (!DB::table('posts')->where('id',$request->post_id)->exists()){
             return response()->json(['message'=>'post does not exist'],500);

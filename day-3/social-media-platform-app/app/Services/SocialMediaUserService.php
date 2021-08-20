@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SocialMediaUserService {
 
@@ -30,11 +32,16 @@ class SocialMediaUserService {
      */
     public function createUser(Request $request): JsonResponse
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required',
             'dob'=> 'required'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message'=>'invalid input'],400);
+        }
 
         $name = \request('name');
         $email = \request('email');
@@ -58,11 +65,15 @@ class SocialMediaUserService {
             return response()->json(['message'=>'user does not exist'],500);
         }
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required',
             'dob'=> 'required'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message'=>'invalid input'],400);
+        }
 
         $name = \request('name');
         $email = \request('email');
