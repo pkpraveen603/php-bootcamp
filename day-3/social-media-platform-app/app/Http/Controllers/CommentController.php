@@ -28,10 +28,10 @@ class CommentController extends Controller
      * @param int $user_id
      * @return JsonResponse
      */
-    public function store(Request $request, int $user_id): JsonResponse
+    public function store(Request $request, int $post_id): JsonResponse
     {
         //
-        return (new SocialMediaCommentService())->addComment($request,$user_id);
+        return (new SocialMediaCommentService())->addComment($request,$post_id);
     }
 
 

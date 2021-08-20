@@ -13,13 +13,7 @@ class UserServicesTest extends TestCase
 {
 
     use WithoutMiddleware;
-    //use RefreshDatabase;
-    //use DatabaseMigrations;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
     public function test_get_all_users()
     {
         $response = $this->get('/user');
@@ -37,13 +31,26 @@ class UserServicesTest extends TestCase
     public function test_update_user(){
 
         $user = User::factory()->create(['name'=>'UpdatedName'])->attributesToArray();
-        $response = $this->patch('/user/1',$user);
+        $response = $this->patch('/user/2',$user);
         $response->assertStatus(200);
+    }
+
+    public function test_update_not_existing_user(){
+
+        $user = User::factory()->create(['name'=>'Updated Name__'])->attributesToArray();
+        $response = $this->patch('/user/1000',$user);
+        $response->assertStatus(500);
     }
 
     public function test_delete_user(){
 
-        $response = $this->delete('/user/1');
+        $response = $this->delete('/user/3');
         $response->assertStatus(200);
+    }
+
+    public function test_delete_not_existing_user(){
+
+        $response = $this->delete('/user/1000');
+        $response->assertStatus(500);
     }
 }

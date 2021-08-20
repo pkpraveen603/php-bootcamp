@@ -33,5 +33,5 @@ Route::delete('/post/{id}', [PostController::class, 'destroy']);
 
 //comment routes
 Route::get('/comment/{post_id}', [CommentController::class, 'index']);
-Route::post('/comment/{user_id}', [CommentController::class, 'store']);
+Route::post('/comment/{post_id}', [CommentController::class, 'store']);
 Route::delete('/comment/{id}', [CommentController::class, 'destroy']);

@@ -31,27 +31,27 @@ class SocialMediaCommentService {
      * @param int $user_id
      * @return JsonResponse
      */
-    public function addComment(Request $request, int $user_id): JsonResponse
+    public function addComment(Request $request, int $post_id): JsonResponse
     {
 
         $validator = Validator::make($request->all(), [
             'comment' => 'bail|required',
-            'post_id' => 'required',
+            'user_id' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['message'=>'invalid input'],400);
         }
 
-        if (!DB::table('posts')->where('id',$request->post_id)->exists()){
-            return response()->json(['message'=>'post does not exist'],500);
-        }
-
-        if (!DB::table('users')->where('id',$user_id)->exists()){
+        if (!DB::table('users')->where('id',$request->user_id)->exists()){
             return response()->json(['message'=>'user does not exist'],500);
         }
 
-        $post_id = \request('post_id');
+        if (!DB::table('posts')->where('id',$post_id)->exists()){
+            return response()->json(['message'=>'post does not exist'],500);
+        }
+
+        $user_id = \request('user_id');
         $comment = \request('comment');
 
         $data = array('post_id'=>$post_id,'comment'=>$comment,'user_id'=>$user_id);
