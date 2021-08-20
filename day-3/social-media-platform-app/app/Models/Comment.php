@@ -33,4 +33,5 @@ class Comment extends Model
         'post_id',
         'comment',
     ];
+    protected $primaryKey = 'id';
 }

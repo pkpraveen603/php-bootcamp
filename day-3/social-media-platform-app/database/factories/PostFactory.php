@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class UserFactory extends Factory
+class PostFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Post::class;
 
     /**
      * Define the model's default state.
@@ -23,9 +23,9 @@ class UserFactory extends Factory
     {
         return [
             //
-            'name' => $this->faker->name(),
-            'email' => $this->faker->freeEmail(),
-            'dob' => $this->faker->date()
+            'user_id' => $this->faker->biasedNumberBetween(0,5),
+            'title' => $this->faker->title(),
+            'body' => $this->faker->paragraph()
         ];
     }
 }
