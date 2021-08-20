@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class SocialMediaPostService {
      */
     public function getPosts(int $user_id): JsonResponse
     {
-        $posts = DB::table('posts')->where('user_id',$user_id)->get();
+        $posts = Post::where('user_id',$user_id)->get();
         return response()->json([
             'posts'=>$posts,
         ],200);
@@ -35,15 +36,17 @@ class SocialMediaPostService {
             'title' => 'bail|required|max:255',
             'body' => 'required',
         ]);
+
+        if (!DB::table('users')->where('id',$user_id)->exists()){
+            return response()->json(['message'=>'user does not exist'],500);
+        }
+
         $body = \request('body');
         $title = \request('title');
 
         $data = array('body'=>$body,'title'=>$title, 'user_id' => $user_id);
-        $id = DB::table('posts')->insertGetId($data);
-        return response()->json([
-            'id'=>$id,
-            'body'=>$body,
-            'title'=>$title]);
+        $post = Post::create($data);
+        return response()->json($post);
     }
 
     /**
@@ -68,9 +71,7 @@ class SocialMediaPostService {
         ]);
 
         $data = array('body'=>$body,'title'=>$title, 'id' => $id);
-        DB::table('posts')
-            ->where('id', $id)
-            ->update($data);
+        Post::where('id', $id)->update($data);
 
         return response()->json([
             'id'=>$id,
@@ -88,9 +89,9 @@ class SocialMediaPostService {
         if (!DB::table('posts')->where('id',$id)->exists()){
             return response()->json(['message'=>'post does not exist'],500);
         }
-
+        Post::destroy($id);
         return response()->json([
-            'message'=>"User deleted successfully",
+            'message'=>"Post deleted successfully",
         ]);
         //
     }

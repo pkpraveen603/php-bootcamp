@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class SocialMediaCommentService {
      */
     public function getComments(int $post_id): JsonResponse
     {
-        $comments = DB::table('comments')->where('post_id',$post_id)->get();
+        $comments = Comment::where('post_id',$post_id)->get();
         return response()->json([
             'comments'=>$comments,
         ],200);
@@ -40,15 +41,16 @@ class SocialMediaCommentService {
             return response()->json(['message'=>'post does not exist'],500);
         }
 
+        if (!DB::table('users')->where('id',$user_id)->exists()){
+            return response()->json(['message'=>'user does not exist'],500);
+        }
+
         $post_id = \request('post_id');
         $comment = \request('comment');
 
         $data = array('post_id'=>$post_id,'comment'=>$comment,'user_id'=>$user_id);
-        $id = DB::table('comments')->insertGetId($data);
-        return response()->json([
-            'id'=>$id,
-            'comment'=>$comment,
-            'post_id'=>$post_id]);
+        $comment = Comment::create($data);
+        return response()->json($comment);
     }
 
 
@@ -61,13 +63,13 @@ class SocialMediaCommentService {
     public function deleteComment(int $id): JsonResponse
     {
 
-        if (!DB::table('posts')->where('id',$id)->exists()){
-            return response()->json(['message'=>'post does not exist'],500);
+        if (!DB::table('comments')->where('id',$id)->exists()){
+            return response()->json(['message'=>'comment does not exist'],500);
         }
 
-        DB::table('comments')->delete($id);
+        Comment::destroy($id);
         return response()->json([
-            'message'=>"User deleted successfully",
+            'message'=>"Comment deleted successfully",
         ]);
         //
     }

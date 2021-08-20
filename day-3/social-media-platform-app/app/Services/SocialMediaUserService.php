@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,12 +40,8 @@ class SocialMediaUserService {
         $email = \request('email');
         $dob = \request('dob');
         $data = array('name'=>$name,'email'=>$email,'dob'=>$dob);
-        $id = DB::table('users')->insertGetId($data);
-        return response()->json([
-            'id'=>$id,
-            'name'=>$name,
-            'email'=>$email,
-            'dob'=>$dob]);
+        $user = User::create($data);
+        return response()->json($user);
     }
 
     /**
@@ -72,9 +69,7 @@ class SocialMediaUserService {
         $dob = \request('dob');
 
         $data = array('name'=>$name,'email'=>$email,'dob'=>$dob);
-        DB::table('users')
-            ->where('id', $id)
-            ->update($data);
+        User::where('id', $id)->update($data);
         return response()->json($data,200);
     }
 
@@ -89,7 +84,7 @@ class SocialMediaUserService {
         if (!DB::table('users')->where('id',$id)->exists()){
             return response()->json(['message'=>'user does not exist'],500);
         }
-        DB::table('users')->delete($id);
+        User::destroy($id);
         return response()->json([
             'message'=>"User deleted successfully",
         ],200);
